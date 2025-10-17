@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Track } from 'livekit-client';
-import { AnimatePresence, motion, type Transition } from 'motion/react';
+import { AnimatePresence, type Transition, motion } from 'motion/react';
 import {
   type TrackReference,
   useLocalParticipant,
@@ -182,10 +182,12 @@ export function MediaTiles({ chatOpen }: MediaTilesProps) {
                   layoutId="camera"
                   {...animationProps}
                   trackRef={cameraTrack}
-                  transition={{
-                    ...animationProps.transition,
-                    delay: chatOpen ? 0 : 0.15,
-                  } as Transition}
+                  transition={
+                    {
+                      ...animationProps.transition,
+                      delay: chatOpen ? 0 : 0.15,
+                    } as Transition
+                  }
                   className="h-[90px]"
                 />
               )}
@@ -197,10 +199,12 @@ export function MediaTiles({ chatOpen }: MediaTilesProps) {
                   layoutId="screen"
                   {...animationProps}
                   trackRef={screenShareTrack}
-                  transition={{
-                    ...animationProps.transition,
-                    delay: chatOpen ? 0 : 0.15,
-                  } as Transition}
+                  transition={
+                    {
+                      ...animationProps.transition,
+                      delay: chatOpen ? 0 : 0.15,
+                    } as Transition
+                  }
                   className="h-[90px]"
                 />
               )}

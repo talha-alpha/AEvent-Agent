@@ -10,18 +10,19 @@ interface VideoTileProps {
   className?: string;
 }
 
-export const VideoTile = React.forwardRef<HTMLDivElement, VideoTileProps>(({
-  trackRef,
-  className,
-}, ref) => {
-  return (
-    <div ref={ref} className={cn('bg-muted overflow-hidden rounded-md', className)}>
-      <MotionVideoTrack
-        trackRef={trackRef}
-        width={trackRef?.publication.dimensions?.width ?? 0}
-        height={trackRef?.publication.dimensions?.height ?? 0}
-        className={cn('h-full w-auto')}
-      />
-    </div>
-  );
-});
+export const VideoTile = React.forwardRef<HTMLDivElement, VideoTileProps>(
+  ({ trackRef, className }, ref) => {
+    return (
+      <div ref={ref} className={cn('bg-muted overflow-hidden rounded-md', className)}>
+        <MotionVideoTrack
+          trackRef={trackRef}
+          width={trackRef?.publication.dimensions?.width ?? 0}
+          height={trackRef?.publication.dimensions?.height ?? 0}
+          className={cn('h-full w-auto')}
+        />
+      </div>
+    );
+  }
+);
+
+VideoTile.displayName = 'VideoTile';

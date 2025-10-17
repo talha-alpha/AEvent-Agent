@@ -7,18 +7,19 @@ interface AgentAudioTileProps {
   className?: string;
 }
 
-export const AvatarTile = React.forwardRef<HTMLDivElement, AgentAudioTileProps>(({
-  videoTrack,
-  className,
-}, ref) => {
-  return (
-    <div ref={ref} className={cn(className)}>
-      <VideoTrack
-        trackRef={videoTrack}
-        width={videoTrack?.publication.dimensions?.width ?? 0}
-        height={videoTrack?.publication.dimensions?.height ?? 0}
-        className="rounded-md"
-      />
-    </div>
-  );
-});
+export const AvatarTile = React.forwardRef<HTMLDivElement, AgentAudioTileProps>(
+  ({ videoTrack, className }, ref) => {
+    return (
+      <div ref={ref} className={cn(className)}>
+        <VideoTrack
+          trackRef={videoTrack}
+          width={videoTrack?.publication.dimensions?.width ?? 0}
+          height={videoTrack?.publication.dimensions?.height ?? 0}
+          className="rounded-md"
+        />
+      </div>
+    );
+  }
+);
+
+AvatarTile.displayName = 'AvatarTile';
