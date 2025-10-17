@@ -1,3 +1,4 @@
+import React from 'react';
 import { type TrackReference, VideoTrack } from '@livekit/components-react';
 import { cn } from '@/lib/utils';
 
@@ -6,11 +7,10 @@ interface AgentAudioTileProps {
   className?: string;
 }
 
-export const AvatarTile = ({
+export const AvatarTile = React.forwardRef<HTMLDivElement, AgentAudioTileProps>(({
   videoTrack,
   className,
-  ref,
-}: React.ComponentProps<'div'> & AgentAudioTileProps) => {
+}, ref) => {
   return (
     <div ref={ref} className={cn(className)}>
       <VideoTrack
@@ -21,4 +21,4 @@ export const AvatarTile = ({
       />
     </div>
   );
-};
+});

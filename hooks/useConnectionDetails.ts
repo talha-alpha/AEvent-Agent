@@ -71,8 +71,6 @@ export default function useConnectionDetails(appConfig: AppConfig) {
         });
         // Don't throw here - let the frontend still work even if agent fails
       } else {
-        console.log('Backend agent started successfully');
-        // Add a small delay to ensure agent is fully connected before proceeding
         await new Promise(resolve => setTimeout(resolve, 2000));
       }
     } catch (error) {

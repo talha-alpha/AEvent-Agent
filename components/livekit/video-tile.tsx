@@ -5,11 +5,15 @@ import { cn } from '@/lib/utils';
 
 const MotionVideoTrack = motion.create(VideoTrack);
 
-export const VideoTile = ({
+interface VideoTileProps {
+  trackRef: React.ComponentProps<typeof VideoTrack>['trackRef'];
+  className?: string;
+}
+
+export const VideoTile = React.forwardRef<HTMLDivElement, VideoTileProps>(({
   trackRef,
   className,
-  ref,
-}: React.ComponentProps<'div'> & React.ComponentProps<typeof VideoTrack>) => {
+}, ref) => {
   return (
     <div ref={ref} className={cn('bg-muted overflow-hidden rounded-md', className)}>
       <MotionVideoTrack
@@ -20,4 +24,4 @@ export const VideoTile = ({
       />
     </div>
   );
-};
+});

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Track } from 'livekit-client';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, motion, type Transition } from 'motion/react';
 import {
   type TrackReference,
   useLocalParticipant,
@@ -30,11 +30,11 @@ const animationProps = {
     scale: 0,
   },
   transition: {
-    type: 'spring',
+    type: 'spring' as const,
     stiffness: 675,
     damping: 75,
     mass: 1,
-  },
+  } as Transition,
 };
 
 const classNames = {
@@ -106,7 +106,7 @@ export function MediaTiles({ chatOpen }: MediaTilesProps) {
   const transition = {
     ...animationProps.transition,
     delay: chatOpen ? 0 : 0.15, // delay on close
-  };
+  } as Transition;
   const agentAnimate = {
     ...animationProps.animate,
     scale: chatOpen ? 1 : 3,
@@ -185,7 +185,7 @@ export function MediaTiles({ chatOpen }: MediaTilesProps) {
                   transition={{
                     ...animationProps.transition,
                     delay: chatOpen ? 0 : 0.15,
-                  }}
+                  } as Transition}
                   className="h-[90px]"
                 />
               )}
@@ -200,7 +200,7 @@ export function MediaTiles({ chatOpen }: MediaTilesProps) {
                   transition={{
                     ...animationProps.transition,
                     delay: chatOpen ? 0 : 0.15,
-                  }}
+                  } as Transition}
                   className="h-[90px]"
                 />
               )}
