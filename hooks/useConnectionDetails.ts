@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { decodeJwt } from 'jose';
+import { toastAlert } from '@/components/alert-toast';
 import { ConnectionDetails } from '@/app/api/connection-details/route';
 import { AppConfig } from '@/lib/types';
 
@@ -46,9 +47,46 @@ export default function useConnectionDetails(appConfig: AppConfig) {
       throw new Error('Error fetching connection details!');
     }
 
+    // Start the backend agent with the room details and wait for it to connect
+    try {
+      const agentResponse = await fetch('/api/start-agent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          roomUrl: data.serverUrl,
+          roomToken: data.participantToken,
+          roomName: data.roomName,
+        }),
+      });
+
+      const agentResult = await agentResponse.json();
+
+      if (!agentResponse.ok || !agentResult.success) {
+        console.error('Failed to start backend agent:', agentResult.error || 'Unknown error');
+        toastAlert({
+          title: 'Agent Connection Failed',
+          description: 'The voice agent could not be started. Please check your LiveKit credentials.',
+        });
+        // Don't throw here - let the frontend still work even if agent fails
+      } else {
+        console.log('Backend agent started successfully');
+        // Add a small delay to ensure agent is fully connected before proceeding
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+    } catch (error) {
+      console.error('Error starting backend agent:', error);
+      toastAlert({
+        title: 'Agent Connection Error',
+        description: 'There was an error connecting to the voice agent. The interface will still work for chat.',
+      });
+      // Don't throw error here, as the frontend should still work even if agent fails to start
+    }
+
     setConnectionDetails(data);
     return data;
-  }, []);
+  }, [appConfig.agentName, appConfig.sandboxId]);
 
   useEffect(() => {
     fetchConnectionDetails();

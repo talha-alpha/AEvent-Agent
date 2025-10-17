@@ -9,6 +9,7 @@ import {
   useVoiceAssistant,
 } from '@livekit/components-react';
 import { toastAlert } from '@/components/alert-toast';
+import { ListeningConsole } from '@/components/ListeningConsole';
 import { AgentControlBar } from '@/components/livekit/agent-control-bar/agent-control-bar';
 import { ChatEntry } from '@/components/livekit/chat/chat-entry';
 import { ChatMessageView } from '@/components/livekit/chat/chat-message-view';
@@ -128,6 +129,8 @@ export const SessionView = ({
       </div>
 
       <MediaTiles chatOpen={chatOpen} />
+
+      {/* <ListeningConsole /> */}
 
       <div className="bg-background fixed right-0 bottom-0 left-0 z-50 px-3 pt-2 pb-3 md:px-12 md:pb-12">
         <motion.div
