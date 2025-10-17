@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { decodeJwt } from 'jose';
-import { toastAlert } from '@/components/alert-toast';
 import { ConnectionDetails } from '@/app/api/connection-details/route';
+import { toastAlert } from '@/components/alert-toast';
 import { AppConfig } from '@/lib/types';
 
 const ONE_MINUTE_IN_MILLISECONDS = 60 * 1000;
@@ -67,17 +67,19 @@ export default function useConnectionDetails(appConfig: AppConfig) {
         console.error('Failed to start backend agent:', agentResult.error || 'Unknown error');
         toastAlert({
           title: 'Agent Connection Failed',
-          description: 'The voice agent could not be started. Please check your LiveKit credentials.',
+          description:
+            'The voice agent could not be started. Please check your LiveKit credentials.',
         });
         // Don't throw here - let the frontend still work even if agent fails
       } else {
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 2000));
       }
     } catch (error) {
       console.error('Error starting backend agent:', error);
       toastAlert({
         title: 'Agent Connection Error',
-        description: 'There was an error connecting to the voice agent. The interface will still work for chat.',
+        description:
+          'There was an error connecting to the voice agent. The interface will still work for chat.',
       });
       // Don't throw error here, as the frontend should still work even if agent fails to start
     }
