@@ -26,7 +26,7 @@ async function killPort8081(): Promise<void> {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<Response> {
   try {
     const { roomUrl, roomToken, roomName } = await request.json();
 
@@ -75,22 +75,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Agent script not found' }, { status: 500 });
     }
 
+    const agentProcess = spawn(pythonPath, [agentPath, 'start'], {
+      cwd: backendPath,
+      env: {
+        ...process.env,
+        LIVEKIT_URL: process.env.LIVEKIT_URL ?? '',
+        LIVEKIT_API_KEY: process.env.LIVEKIT_API_KEY ?? '',
+        LIVEKIT_API_SECRET: process.env.LIVEKIT_API_SECRET ?? '',
+        OPENAI_API_KEY: process.env.OPENAI_API_KEY ?? '',
+        DEEPGRAM_API_KEY: process.env.DEEPGRAM_API_KEY ?? '',
+      },
+      stdio: ['pipe', 'pipe', 'pipe'],
+    });
+
+    activeAgents.set(roomName, agentProcess);
+
     return new Promise((resolve) => {
-      const agentProcess = spawn(pythonPath, [agentPath, 'start'], {
-        cwd: backendPath,
-        env: {
-          ...process.env,
-          LIVEKIT_URL: process.env.LIVEKIT_URL ?? '',
-          LIVEKIT_API_KEY: process.env.LIVEKIT_API_KEY ?? '',
-          LIVEKIT_API_SECRET: process.env.LIVEKIT_API_SECRET ?? '',
-          OPENAI_API_KEY: process.env.OPENAI_API_KEY ?? '',
-          DEEPGRAM_API_KEY: process.env.DEEPGRAM_API_KEY ?? '',
-        },
-        stdio: ['pipe', 'pipe', 'pipe'],
-      });
-
-      activeAgents.set(roomName, agentProcess);
-
       let hasConnected = false;
       const connectionTimeout = setTimeout(() => {
         if (!hasConnected) {
